@@ -1,10 +1,9 @@
 import '../index.css'
 import { useEffect, useState } from 'react'
 import Employees from './Employees'
-import { ChakraProvider } from '@chakra-ui/react'
-import {Flex, Heading, Input, Center, Stack, Button, Box, Spacer, Text} from "@chakra-ui/react"
+import {Flex, Heading, Center, Stack, Button} from "@chakra-ui/react"
 import AddEmployeeModal from './AddEmployeeModal';
-import { BrowserRouter, Route, Routes, Navigate, useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 function Dashboard() {
@@ -14,7 +13,7 @@ function Dashboard() {
 
     useEffect(()=>{
         const getEmployees = async () => {
-            let response = await fetch("http://127.0.0.1:5000/employee", {
+            await fetch("http://127.0.0.1:5000/employee", {
                 method: "GET",
                 credentials: 'include'
               }).then(async resp => {
@@ -38,7 +37,7 @@ function Dashboard() {
 
 
         const getSkillLevels = async () => {
-          let response = await fetch("http://127.0.0.1:5000/skilllevels", {
+          await fetch("http://127.0.0.1:5000/skilllevels", {
               method: "GET",
               credentials: 'include'
             }).then(async resp => {
@@ -62,7 +61,7 @@ function Dashboard() {
     }, []);
 
     const deleteEmployee = async (id)=> {
-        let response = await fetch("http://127.0.0.1:5000/employee/" + id, {
+        await fetch("http://127.0.0.1:5000/employee/" + id, {
       method: "DELETE",
       headers: {
         'Origin': 'http://localhost:3000',
@@ -93,7 +92,7 @@ function Dashboard() {
     }
 
     const addEmployee = async (emp) => {
-        let response = await fetch("http://127.0.0.1:5000/employee", {
+        await fetch("http://127.0.0.1:5000/employee", {
       method: "POST",
       headers: {
         'Origin': 'http://localhost:3000',
@@ -119,7 +118,7 @@ function Dashboard() {
         navigate('/')
       }
       else{
-        alert("something went wrong")
+        alert("something went wrong.")
         navigate('/')
       }
     
@@ -132,7 +131,7 @@ function Dashboard() {
     }
 
     const editEmployee = async (emp)=> {
-          let response = await fetch("http://127.0.0.1:5000/employee/" + emp.employeeID, {
+          await fetch("http://127.0.0.1:5000/employee/" + emp.employeeID, {
         method: "PUT",
         headers: {
           'Origin': 'http://localhost:3000',
@@ -187,8 +186,14 @@ function Dashboard() {
         'Origin': 'http://localhost:3000',
     },
     credentials:'include'
+    }).then(async(resp)=>{
+      if(!resp.ok){
+        alert("something went wrong.  Cookies not removed", resp.text)
+        navigate('/')
+      }
+
     }).catch(error =>{
-      alert("something went wrong.  Cookies not removed", error)
+      alert("Error.  Cookies not removed", error)
       navigate('/')
     })
       navigate('/')
@@ -197,10 +202,10 @@ function Dashboard() {
     return (
 
         <Flex bgGradient='linear(to-tl, black, blue.800)' dir='column' height="100vh" alignItems="center" justify="center">
-          <Button colorScheme="pink" position='absolute' onClick={logout} top="0" right="0" m="3px" height="30" >Log Out</Button>
+          <Button rounded={3} colorScheme="pink" position='absolute' onClick={logout} top="2" right="2" m="3px" height="30" >Log Out</Button>
           <Stack>
-            <Heading color="white" alignContent="center" justifyContent="center" Dashboard>Dashboard</Heading>
-            <Flex bgGradient='linear(to-br, blue.200, pink.200)' height= "70vh" width="80vh" alignItems="center" direction="column" p={3} rounded={6} >
+            <Heading color="white" alignContent="center" justifyContent="center">Dashboard</Heading>
+            <Flex bgGradient='linear(to-br, blue.200, pink.200)' height= "70vh" width="80vh" alignItems="center" direction="column" p={3} rounded={3} >
               <Flex direction="row">
                 <Heading m={3} alignContent="center" justifyContent="center" fontSize={25}>Employees</Heading>
               </Flex>
@@ -209,11 +214,8 @@ function Dashboard() {
               </Flex>
               {employees.length > 0 ? <Employees employees={employees} onDelete = {deleteEmployee} onAdd={addEmployee} onEdit={editEmployee} skills={skillLevels} /> : <Center>No Employees</Center>}
               </Flex>
-          
           </Stack>
         </Flex>
-
-
     );
 }
   

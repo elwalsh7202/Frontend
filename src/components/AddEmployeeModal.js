@@ -1,6 +1,6 @@
-import {Flex, Heading, Input, Center, Stack, Button, Box, Spacer, Text, FormControl, FormLabel, Select} from "@chakra-ui/react"
+import { Input, Stack, Button, Text, FormControl, FormLabel, Select} from "@chakra-ui/react"
 import { useDisclosure } from '@chakra-ui/react'
-import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
+import { Checkbox } from '@chakra-ui/react'
 import {useState} from 'react'
 import {
     Modal,
@@ -37,9 +37,7 @@ function AddEmployeeModal({onAdd, skills}) {
     if(Date.parse(v) <= Date.now()){
       var currAge = getAge(v)
       setAge(currAge);
-
     }
-
   }
 
   const onMenuChange = (e)=>{
@@ -71,7 +69,6 @@ function AddEmployeeModal({onAdd, skills}) {
     return false
   }
   const onSubmit = (e) => {
-    console.log(validateEmail(email))
       e.preventDefault();
       if(firstName === '' || lastName === '' || !validateEmail(email) || DOB === '' || skillName === '' || Date.parse(DOB) > Date.now()){
         console.log(':)')
@@ -84,11 +81,10 @@ function AddEmployeeModal({onAdd, skills}) {
 
      }
 
-
   }
     return (
       <FormControl >
-        <Button m="1px" height = "30px" colorScheme="green" onClick={onOpen}>Add+</Button>
+        <Button rounded={3} m="1px" height = "30px" colorScheme="green" onClick={onOpen}>Add+</Button>
         <Modal isOpen={isOpen} onClose={close}>
           <ModalOverlay />
           <ModalContent>
@@ -138,18 +134,21 @@ function AddEmployeeModal({onAdd, skills}) {
                  ))}
                  
               </Select>
-              <Text>Description: {description}</Text>
+              {
+                skillName==="" ? <Text>Description:</Text> : <Text>Description: {description}</Text>
+              }
+              
 
             </Stack>
-            <Checkbox colorScheme='green' value={active} onChange={(e) => setActive(e.currentTarget.checked)}>Active</Checkbox>
+            <Checkbox fontWeight='bold' colorScheme='green' value={active} onChange={(e) => setActive(e.currentTarget.checked)}><FormLabel>Active</FormLabel></Checkbox>
           </Stack>
             </ModalBody>
   
             <ModalFooter>
-            <Button colorScheme='red' mr={3} onClick={close}>
+            <Button rounded={3} colorScheme='red' mr={3} onClick={close}>
                 Cancel
               </Button>
-            <Button type='submit' onClick={onSubmit} colorScheme="green">Add</Button>
+            <Button rounded={3} type='submit' onClick={onSubmit} colorScheme="green">Add</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>

@@ -14,12 +14,12 @@ const DeleteEmployee = ({emp, onDelete}) => {
   return (
     <Popover>
         <PopoverTrigger>
-            <Button m ='3px' height='30px' colorScheme='red' cursor="pointer">Delete</Button>
+            <Button rounded={3} m ='3px' height='30px' colorScheme='red' cursor="pointer">Delete</Button>
         </PopoverTrigger>
         <PopoverContent width="20vh">
         <PopoverArrow />
     <PopoverBody>Are you sure?</PopoverBody>
-    <Button colorScheme='red' onClick={() => onDelete(emp.employeeID)}>Delete</Button>
+    <Button rounded={3} colorScheme='red' onClick={() => onDelete(emp.employeeID)}>Delete</Button>
     <PopoverCloseButton>CANCEL</PopoverCloseButton>
   </PopoverContent>
 </Popover>

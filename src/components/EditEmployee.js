@@ -1,7 +1,7 @@
-import {Flex, Heading, Input, Center, Stack, Button, Box, Spacer, Text, Select, FormLabel} from "@chakra-ui/react"
+import { Input, Stack, Button,Text, Select, FormLabel} from "@chakra-ui/react"
 import { useDisclosure } from '@chakra-ui/react'
-import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
-import {useState, useEffect} from 'react'
+import { Checkbox } from '@chakra-ui/react'
+import { useState } from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -14,7 +14,6 @@ import {
 
   const getAge = (dob) =>{
     var month_diff = Date.now() - new Date(dob);
-    console.log(month_diff);
     var age_dt = new Date(month_diff); 
     var year = age_dt.getUTCFullYear();
     return Math.abs(year - 1970)
@@ -23,12 +22,11 @@ import {
 const EditEmployee = ({onEdit, emp, skills}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [editMode, setEditMode] = useState(false)
-    const [employeeID, setEmployeeID] = useState(emp.employeeID)
+    const [employeeID] = useState(emp.employeeID)
     const [firstName, setFirstName] = useState(emp.firstName);
     const [lastName, setlastName] = useState(emp.lastName);
     const [email, setemail] = useState(emp.email);
     const [DOB, setDOB] = useState(emp.DOB);
-    console.log(getAge(emp.DOB))
     const [age, setAge] = useState(getAge(emp.DOB));
     const [skillName, setSkillName] = useState(emp.skillName);
     const [active, setActive] = useState(emp.active);
@@ -112,7 +110,7 @@ const EditEmployee = ({onEdit, emp, skills}) => {
     }
       return (
         <>
-          <Button colorScheme='blue' m ='3px' height='30px' width="70px" onClick={open}>View</Button>
+          <Button right='.25vw' bottom='.75' rounded={3} colorScheme='blue' m ='3px' height='30px' width="70px" onClick={open}>View</Button>
     
           <Modal isOpen={isOpen} onClose={close}>
             <ModalOverlay />
@@ -161,9 +159,11 @@ const EditEmployee = ({onEdit, emp, skills}) => {
                     <option key={s.skillName} value={s.skillName}>{s.skillName}</option>
                  ))}
               </Select>
-              <Text>Description: {description}</Text>
+              {
+                skillName==="" ? <Text>Description:</Text> : <Text>Description: {description}</Text>
+              }
               </Stack>
-              <Checkbox isDisabled={!editMode} isChecked={active} colorScheme='green' onChange={(e) => setActive(e.currentTarget.checked)}>Active</Checkbox>
+              <Checkbox isDisabled={!editMode} isChecked={active} colorScheme='green' onChange={(e) => setActive(e.currentTarget.checked)}><FormLabel>Active</FormLabel></Checkbox>
             </Stack>
               </ModalBody>
     
